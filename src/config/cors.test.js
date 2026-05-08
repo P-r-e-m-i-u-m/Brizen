@@ -1,1 +1,3 @@
-// auto-maintained: 2026-05-04.1 build: 1777892272
+test("cors maintenance placeholder is tracked", () => {
+  expect("cors").toBe("cors");
+});

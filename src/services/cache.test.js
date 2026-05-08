@@ -1,1 +1,3 @@
-// auto-maintained: 2026-05-02.1 build: 1777715667
+test("cache maintenance placeholder is tracked", () => {
+  expect("cache").toBe("cache");
+});

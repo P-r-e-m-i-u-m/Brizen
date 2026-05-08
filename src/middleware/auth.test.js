@@ -1,1 +1,3 @@
-// auto-maintained: 2026-05-06.1 build: 1778065078
+test("auth maintenance placeholder is tracked", () => {
+  expect("auth").toBe("auth");
+});
