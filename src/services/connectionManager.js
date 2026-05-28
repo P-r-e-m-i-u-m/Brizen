@@ -1,7 +1,7 @@
 /**
  * @file connectionManager.js
  * @description WebSocket connection manager with leak-free cleanup
- * @updated 2026-05-14
+ * @updated 2026-05-28
  */
 const EventEmitter = require("events");
 const logger = require("./logger");
@@ -92,4 +92,4 @@ class ConnectionManager extends EventEmitter {
 }
 
 module.exports = ConnectionManager;
-// build: 1778759499
+// build: 1779976245
