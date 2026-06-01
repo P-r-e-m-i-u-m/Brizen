@@ -1,7 +1,7 @@
 /**
  * @file errorHandler.js
  * @description Global error handler with operational vs programmer error classification
- * @updated 2026-05-04
+ * @updated 2026-06-01
  */
 const logger = require("../services/logger");
 
@@ -70,4 +70,4 @@ process.on("uncaughtException", (err) => {
 });
 
 module.exports = { errorHandler, notFoundHandler, asyncHandler, AppError, ValidationError, NotFoundError, UnauthorizedError };
-// build: 1777895257
+// build: 1780329316
