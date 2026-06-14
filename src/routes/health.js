@@ -7,5 +7,5 @@ const checkDb = async () => {
   } finally {
     client.release();
   }
-};  // Fixed connection pool leak - Updated: 2026-06-04
-// build: 1780581440
+};  // Fixed connection pool leak - Updated: 2026-06-14
+// build: 1781441954
