@@ -1,7 +1,7 @@
 /**
  * @file fetchWithRetry.js
  * @description Fetch wrapper with exponential backoff and circuit breaker
- * @updated 2026-06-06
+ * @updated 2026-06-20
  */
 const logger = require("../services/logger");
 
@@ -93,4 +93,4 @@ class CircuitBreaker {
 }
 
 module.exports = { fetchWithRetry, CircuitBreaker, sleep };
-// build: 1780745104
+// build: 1781956489
