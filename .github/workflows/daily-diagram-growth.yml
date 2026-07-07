@@ -1,0 +1,95 @@
+name: Daily Diagram Growth
+
+on:
+  schedule:
+    - cron: '0 4 * * *'   # runs daily at 4:00 AM UTC (1 hour after the rename job)
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  add-block:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Add new block to System Snapshot diagram
+        run: |
+          python3 << 'EOF'
+          import re, random, sys
+
+          with open('README.md', 'r', encoding='utf-8') as f:
+              content = f.read()
+
+          # (source_node_id, new_node_id, new_node_label)
+          candidates = [
+              ("Express", "Gateway", "API gateway"),
+              ("Middleware", "CircuitBreaker", "Circuit breaker"),
+              ("Services", "SearchIndex", "Search index"),
+              ("Services", "AuditLog", "Audit logger"),
+              ("Services", "FeatureFlags", "Feature flags"),
+              ("Services", "EmailService", "Email service"),
+              ("Services", "SmsGateway", "SMS gateway"),
+              ("Services", "FileStorage", "File storage"),
+              ("Queue", "BackupJob", "Backup job"),
+              ("Middleware", "SecretsManager", "Secrets manager"),
+              ("Express", "ConfigServer", "Config server"),
+              ("Middleware", "HealthCheck", "Health check"),
+              ("Redis", "SessionStore", "Session store"),
+              ("Express", "WebsocketGW", "Websocket gateway"),
+              ("Services", "Notifications", "Notification service"),
+              ("Services", "Analytics", "Analytics pipeline"),
+              ("Services", "MLInference", "ML inference"),
+              ("Services", "ImageProcessing", "Image processing"),
+              ("Services", "PdfGenerator", "PDF generator"),
+              ("Actions", "CronScheduler", "Cron scheduler"),
+              ("Queue", "DeadLetterRetry", "Dead letter retry"),
+              ("Services", "ComplianceLog", "Compliance logger"),
+              ("Express", "LoadBalancer", "Load balancer"),
+              ("LoadBalancer", "CDN", "CDN"),
+              ("Middleware", "Tracing", "Distributed tracing"),
+              ("Actions", "Metrics", "Metrics exporter"),
+              ("Services", "GraphqlGW", "GraphQL gateway"),
+              ("Middleware", "ServiceMesh", "Service mesh"),
+              ("Postgres", "ReadReplica", "Read replica"),
+              ("Services", "WebhookHandler", "Webhook handler"),
+          ]
+
+          match = re.search(r'(## System Snapshot\n```mermaid\n)(.*?)(\n```)', content, re.S)
+          if not match:
+              print("System Snapshot block not found, skipping.")
+              sys.exit(0)
+
+          block = match.group(2)
+          existing_ids = set(re.findall(r'(\w+)\[', block))
+
+          available = [c for c in candidates if c[1] not in existing_ids]
+          if not available:
+              print("All candidate blocks already added, skipping.")
+              sys.exit(0)
+
+          src, node_id, label = random.choice(available)
+          new_line = f'\n  {src} --> {node_id}["{label}"]'
+
+          new_block = block + new_line
+          new_content = content[:match.start(2)] + new_block + content[match.end(2):]
+
+          with open('README.md', 'w', encoding='utf-8') as f:
+              f.write(new_content)
+
+          print(f"Added block: {src} --> {node_id}[\"{label}\"]")
+          EOF
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if git diff --quiet README.md; then
+            echo "No changes to commit."
+          else
+            git add README.md
+            git commit -m "docs: grow system snapshot diagram $(date -u +%Y-%m-%d)"
+            git push
+          fi
