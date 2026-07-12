@@ -14,4 +14,4 @@ async def paginate(model, cursor=None, limit=20):
     items = await query.execute()
     has_more = len(items) > limit
     return PaginationResult(items=items[:limit], next_cursor=str(items[limit-1].id) if has_more else None, has_more=has_more)
-# updated: 2026-07-05 build: 1783249146
+# updated: 2026-07-12 build: 1783851519
