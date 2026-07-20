@@ -50,6 +50,7 @@ flowchart LR
   Middleware --> SecretsManager["Secrets manager"]
   Services --> Analytics["Analytics pipeline"]
   Services --> MLInference["ML inference"]
+  Services --> SearchIndex["Search index"]
 ```
 
 ## Tech Stack
